@@ -37,10 +37,30 @@ var header = document.getElementById("main-header");
 // items[2].style.backgroundColor = "green";
 
 // GET ELEMENT BY TAG NAME
-var li = document.getElementsByTagName("li");
-console.log(li);
+// var li = document.getElementsByTagName("li");
+// console.log(li);
 
-li[1].textContent = "hello 2";
+// li[1].textContent = "hello 2";
 
-li[1].style.fontweight = "bold";
-li[2].style.backgroundColor = "green";
+// li[1].style.fontweight = "bold";
+// li[2].style.backgroundColor = "green";
+
+// QUERYSELECTOR
+
+var header = document.querySelector("#main-header");
+header.style.borderBottom = "solid 4px #ccc";
+
+var input = document.querySelector("input");
+input.value = "hello world";
+
+var input = document.querySelector('input[type="submit"]');
+input.style.value = "SEND";
+
+var item = document.querySelector(".list-group-item");
+item.style.color = "green";
+
+var item2 = document.querySelector(".list-group-item:nth-child(2)");
+item2.style.backgroundColor = "green";
+
+var item3 = document.querySelector(".list-group-item:nth-child(2)");
+item3.style.visibility = "hidden";
