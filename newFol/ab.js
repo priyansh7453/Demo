@@ -28,10 +28,19 @@ var header = document.getElementById("main-header");
 
 // GET ELEMENT BY CLASS NAME
 
-var items = document.getElementsByClassName("list-group-item");
-console.log(items);
+// var items = document.getElementsByClassName("list-group-item");
+// console.log(items);
 
-items[1].textContent = "hello 2";
+// items[1].textContent = "hello 2";
 
-items[1].style.fontweight = "bold";
-items[2].style.backgroundColor = "green";
+// items[1].style.fontweight = "bold";
+// items[2].style.backgroundColor = "green";
+
+// GET ELEMENT BY TAG NAME
+var li = document.getElementsByTagName("li");
+console.log(li);
+
+li[1].textContent = "hello 2";
+
+li[1].style.fontweight = "bold";
+li[2].style.backgroundColor = "green";
