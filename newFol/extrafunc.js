@@ -90,3 +90,19 @@ form.addEventListener("submit", function (e) {
   // Clear the form
   form.reset();
 });
+
+// object in local storage
+
+let myobj = {
+  name: "priyansh Kushwaha",
+  age: 23,
+  phone: "1235",
+};
+
+// seriliazed onbject
+let myobj_seriliazed = JSON.stringify(myobj);
+
+localStorage.setItem("myobj", myobj_seriliazed);
+// nono-seriliazed
+let myobj_deserialized = JSON.parse(localStorage.getItem("myobj"));
+console.log(myobj_deserialized);
