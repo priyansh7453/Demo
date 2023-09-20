@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Local Storage Example</title>
+</head>
+
+<body>
+    <h1>Local Storage Example</h1>
+
+    <form id="userForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="userData">
+        <!-- User data will be displayed here -->
+    </div>
+
+    <script>
+        // Check if there's existing user data in local storage
+        const savedUserData = JSON.parse(localStorage.getItem('userData')) || [];
+
+        // Display existing user data on page load
+        displayUserData();
+
+        // Handle form submission
+        const userForm = document.getElementById('userForm');
+        userForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get user input
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            // Create a user object
+            const user = {
+                name: name,
+                email: email
+            };
+
+            // Add the user to the savedUserData array
+            savedUserData.push(user);
+
+            // Save the updated user data to local storage
+            localStorage.setItem('userData', JSON.stringify(savedUserData));
+
+            // Display the updated user data
+            displayUserData();
+
+            // Clear the form
+            userForm.reset();
+        });
+
+        // Function to display user data
+        function displayUserData() {
+            const userDataDiv = document.getElementById('userData');
+            userDataDiv.innerHTML = '';
+
+            if (savedUserData.length === 0) {
+                userDataDiv.innerHTML = 'No user data available.';
+            } else {
+                userDataDiv.innerHTML = '<h2>User Data:</h2>';
+
+                for (let i = 0; i < savedUserData.length; i++) {
+                    const user = savedUserData[i];
+                    userDataDiv.innerHTML +=
+                        `<p><strong>Name:</strong> ${user.name}<br><strong>Email:</strong> ${user.email}</p>`;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
