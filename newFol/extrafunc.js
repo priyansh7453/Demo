@@ -67,3 +67,26 @@ function filterItem(e) {
     }
   });
 }
+
+// LOCAL STORAGE
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault(); // Prevent the form from submitting
+
+  // Get the user input
+  const name = document.getElementById("item").value;
+
+  // Create an object to store user details
+  const userDetails = {
+    name: name,
+  };
+
+  // Convert the object to a JSON string
+  const userDetailsJSON = JSON.stringify(userDetails);
+
+  // Store the JSON string in local storage
+  localStorage.setItem("userDetails", userDetailsJSON);
+
+  // Clear the form
+  form.reset();
+});
