@@ -24,7 +24,7 @@
 
     <script>
         // Check if there's existing user data in local storage
-        const savedUserData = JSON.parse(localStorage.getItem('userData')) || [];
+        let savedUserData = JSON.parse(localStorage.getItem('userData')) || [];
 
         // Display existing user data on page load
         displayUserData();
@@ -69,9 +69,27 @@
 
                 for (let i = 0; i < savedUserData.length; i++) {
                     const user = savedUserData[i];
-                    userDataDiv.innerHTML +=
-                        `<p><strong>Name:</strong> ${user.name}<br><strong>Email:</strong> ${user.email}</p>`;
+                    const userDiv = document.createElement('div');
+                    userDiv.innerHTML =
+                        `<p><strong>Name:</strong> ${user.name}<br><strong>Email:</strong> ${user.email}</p>
+                        <button onclick="editUser(${i})">Edit</button>
+                        <button onclick="deleteUser(${i})">Delete</button>`;
+                    userDataDiv.appendChild(userDiv);
                 }
+            }
+        }
+
+        // Function to edit a user
+        function editUser(index) {
+            const user = savedUserData[index];
+            const newName = prompt('Enter new name:', user.name);
+            const newEmail = prompt('Enter new email:', user.email);
+
+            if (newName !== null && newEmail !== null) {
+                user.name = newName;
+                user.email = newEmail;
+                localStorage.setItem('userData', JSON.stringify(savedUserData));
+                displayUserData();
             }
         }
 
