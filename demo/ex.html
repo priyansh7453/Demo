@@ -74,6 +74,13 @@
                 }
             }
         }
+
+        // Function to delete a user
+        function deleteUser(index) {
+            savedUserData.splice(index, 1);
+            localStorage.setItem('userData', JSON.stringify(savedUserData));
+            displayUserData();
+        }
     </script>
 </body>
 
