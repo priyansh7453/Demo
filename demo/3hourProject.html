@@ -9,11 +9,19 @@
     <h1>Local Storage Example</h1>
 
     <form id="userForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
+        <label for="name">expenseamount:</label>
+        <input type="number" id="name" name="name" required><br><br>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+        <label for="email">Choose description</label>
+        <input type="text" id="descrip" name="descrip" required><br><br>
+
+        <select class="form-select" id="choose" name="choose" aria-label="Default select example">
+            <option selected>Open this select menu</option>
+            <option value="Fuel">Fuel</option>
+            <option value="Food">Food</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Movie">Movie</option>
+        </select>
 
         <button type="submit">Submit</button>
     </form>
@@ -36,12 +44,14 @@
 
             // Get user input
             const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            const descrip = document.getElementById('descrip').value;
+            const choose = document.getElementById('choose').value;
 
             // Create a user object
             const user = {
                 name: name,
-                email: email
+                descrip: descrip,
+                choose: choose,
             };
 
             // Add the user to the savedUserData array
@@ -71,7 +81,7 @@
                     const user = savedUserData[i];
                     const userDiv = document.createElement('div');
                     userDiv.innerHTML =
-                        `<p><strong>Name:</strong> ${user.name}<br><strong>Email:</strong> ${user.email}</p>
+                        `<p><strong></strong> ${user.name}<br> ${user.descrip} <br> ${user.choose} </p>
                         <button onclick="editUser(${i})">Edit</button>
                         <button onclick="deleteUser(${i})">Delete</button>`;
                     userDataDiv.appendChild(userDiv);
@@ -82,12 +92,14 @@
         // Function to edit a user
         function editUser(index) {
             const user = savedUserData[index];
-            const newName = prompt('Enter new name:', user.name);
-            const newEmail = prompt('Enter new email:', user.email);
+            const newName = prompt('Enter new amount:', user.name);
+            const newEmail = prompt('Enter new descrip:', user.descrip);
+            const newChoose = prompt('Enter new choose:', user.choose);
 
             if (newName !== null && newEmail !== null) {
                 user.name = newName;
-                user.email = newEmail;
+                user.descrip = newEmail;
+                user.choose = newChoose;
                 localStorage.setItem('userData', JSON.stringify(savedUserData));
                 displayUserData();
             }
