@@ -50,22 +50,43 @@
         }
 
         // Simulate user activity by chaining promises
-        updateLastUserActivityTime()
-            .then(() => createPost({ title: "New Post 1" }))
-            .then(() => createPost({ title: "New Post 2" }))
-            .then(() => createPost({ title: "New Post 3" }))
-            .then(() => updateLastUserActivityTime())
-            .then(() => {
-                console.log("All posts:", posts);
-                return deleteLastPost();
-            })
-            .then(() => {
-                console.log("Remaining Posts:", posts);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        //updateLastUserActivityTime()
+        //  .then(() => createPost({ title: "New Post 1" }))
+        //.then(() => createPost({ title: "New Post 2" }))
+        //.then(() => createPost({ title: "New Post 3" }))
+        //.then(() => updateLastUserActivityTime())
+        //.then(() => {
+        //   console.log("All posts:", posts);
+        //  return deleteLastPost();
+        //})
+        //.then(() => {
+        //   console.log("Remaining Posts:", posts);
+        //})
+        //.catch((error) => {
+        //   console.error(error);
+        //});
 
+        // AWAIT AND ASYNC
+
+        async function handleUserActivity() {
+            try {
+                await updateLastUserActivityTime();
+                await createPost({ title: "New Post 1" });
+                await createPost({ title: "New Post 2" });
+                await createPost({ title: "New Post 3" });
+                await updateLastUserActivityTime();
+
+                console.log("All posts:", posts);
+                const deletedPost = await deleteLastPost();
+                console.log("Deleted Post:", deletedPost);
+                console.log("Remaining Posts:", posts);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Simulate user activity
+        handleUserActivity();
     </script>
 </body>
 
