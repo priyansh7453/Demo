@@ -130,6 +130,24 @@
 
         // Function to delete a user
         function deleteUser(index) {
+            window.addEventListener("DOMContentLoaded", () => {
+                const data = axios.delete("https://crudcrud.com/api/4bace2f489e94eeb9d019fcc94fd68d7/booking_appoit")
+                    .then((response) => {
+                        if (response.ok) {
+                            const userdetail = documentg.getElementById(index);
+                            if (userdetail) {
+                                userdetail.remove();
+                            }
+                            else {
+                                console.error('Failed to delete user.');
+                            }
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+                console.log(data);
+            })
             savedUserData.splice(index, 1);
             localStorage.setItem('userData', JSON.stringify(savedUserData));
             displayUserData();
