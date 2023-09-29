@@ -92,6 +92,12 @@
 
         // Function to display user data
         function displayUserData() {
+
+            user = {
+                _id: '',
+                name: '',
+                email: '',
+            }
             const userDataDiv = document.getElementById('userData');
             userDataDiv.innerHTML = '';
 
@@ -104,9 +110,9 @@
                     const user = savedUserData[i];
                     const userDiv = document.createElement('div');
                     userDiv.innerHTML =
-                        `<p><strong></strong> ${user.name}<br> ${user.email} <br> ${user.number} </p>
-                        <button onclick="editUser(${i})">Edit</button>
-                        <button onclick="deleteUser(${i})">Delete</button>`;
+                        `<p><strong></strong> ${user._id}<br> ${user.email} <br> ${user.number} </p>
+                        <button onclick="editUser(${user._id})">Edit</button>
+                        <button onclick="deleteUser(${user._id})">Delete</button>`;
                     userDataDiv.appendChild(userDiv);
                 }
             }
@@ -128,30 +134,57 @@
             }
         }
 
+        // Function to update a user
+        function updateUser(id) {
+            const userIndex = users.findIndex(user => user.id === id);
+            if (userIndex !== -1) {
+                users[userIndex].name = nameInput.value;
+                users[userIndex].email = emailInput.value;
+                users[userIndex].phone = phoneInput.value;
+                displayUsers();
+                editForm.style.display = "none";
+            }
+        }
+
         // Function to delete a user
-        function deleteUser(index) {
-            window.addEventListener("DOMContentLoaded", () => {
-                const data = axios.delete("https://crudcrud.com/api/4bace2f489e94eeb9d019fcc94fd68d7/booking_appoit")
-                    .then((response) => {
-                        if (response.ok) {
-                            const userdetail = documentg.getElementById(index);
-                            if (userdetail) {
-                                userdetail.remove();
-                            }
-                            else {
-                                console.error('Failed to delete user.');
-                            }
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-                console.log(data);
-            })
+        function deleteUser(userId) {
+            // window.addEventListener("DOMContentLoaded", () => {
+            //     const data = axios.delete("https://crudcrud.com/api/4bace2f489e94eeb9d019fcc94fd68d7/booking_appoit")
+            //        .then((response) => {
+            //             if (response.ok) {
+            //                const userdetail = documentg.getElementById(index);
+            //                 if (userdetail) {
+            //                    userdetail.remove();
+            //                }
+            //               else {
+            //                    console.error('Failed to delete user.');
+            //                }
+            //            }
+            //        })
+            //        .catch((error) => {
+            //            console.log(error);
+            //        })
+            //    console.log(data);
+            // })
+            axios.delete('https://crudcrud.com/api/4bace2f489e94eeb9d019fcc94fd68d7/booking_appoit/userId')
+                .then((response) => {
+                    removeUserFromScreen(userId);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
             savedUserData.splice(index, 1);
             localStorage.setItem('userData', JSON.stringify(savedUserData));
             displayUserData();
         }
+
+        //function removeUserFromScreen(userId) {
+        //    const parentNode = document.getElementById('userData');
+        //    const childNodeToDelete = document.getElementById(userId);
+        //   if (childNodeToDelete) {
+        //      parentNode.removeChild(childNodeToDelete);
+        //      }
+        //  }
     </script>
 </body>
 
