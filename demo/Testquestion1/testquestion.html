@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="userForm">
+        <label for="name">candyName:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="description">description:</label>
+        <input type="text" id="description" name="description" required><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" required><br>
+
+        <label for="quantity">quantity:</label>
+        <input type="number" id="quantity" name="quantity" required><br><br>
+
+
+        <button type="submit">Add Item</button>
+    </form>
+
+
+    <div id="userData">
+        <!-- User data will be displayed here -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
+
+
+    <script>
+
+        // Check if there's existing user data in local storage
+        let savedUserData = JSON.parse(localStorage.getItem('userData')) || [];
+
+        // Display existing user data on page load
+        displayUserData();
+
+        // Handle form submission
+        const userForm = document.getElementById('userForm');
+        userForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get user input
+            const name = document.getElementById('name').value;
+            const descrip = document.getElementById('description').value;
+            const price = document.getElementById('price').value;
+            const quantity = document.getElementById('quantity').value;
+
+            // Create a user object
+            const user = {
+                name: name,
+                descrip: descrip,
+                price: price,
+                quantity: quantity,
+            };
+
+            // Add the user to the savedUserData array
+            savedUserData.push(user);
+
+            // Save the updated user data to local storage
+            //localStorage.setItem('userData', JSON.stringify(savedUserData));
+
+            // add cloud
+            axios.post("https://crudcrud.com/api/4efb446406d94d0ba4d8e74a989f6ecf/testques", user)
+                .then(response => {
+                    displayUserData(response.data);
+                    //console.log(response)
+                })
+                .catch(error => {
+                    document.body.innerHTML = document.body.innerHTML + "<h4> something went wrong </h4>"
+                    console.log(error)
+                })
+
+            // Display the updated user data
+            // displayUserData();
+
+            // Clear the form
+            userForm.reset();
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const data = axios.get("https://crudcrud.com/api/4efb446406d94d0ba4d8e74a989f6ecf/testques")
+                .then((response) => {
+                    console.log(response)
+
+                    for (var i = 0; i < response.data.length; i++) {
+                        displayUserData(response.data[i]);
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            console.log(data);
+        })
+
+        // Function to display user data
+        function displayUserData() {
+
+            const userDataDiv = document.getElementById('userData');
+            userDataDiv.innerHTML = '';
+
+            if (savedUserData.length === 0) {
+                userDataDiv.innerHTML = 'No user data available.';
+            } else {
+                userDataDiv.innerHTML = '<h2>Item Add:</h2>';
+
+                for (let i = 0; i < savedUserData.length; i++) {
+                    const user = savedUserData[i];
+                    const userDiv = document.createElement('div');
+                    userDiv.innerHTML =
+                        `<p><strong></strong> ${user.name}<br> ${user.descrip} <br> ${user.price} <br> ${user.quantity}</p>
+                        <button onclick="Add1(${user.quantity})">Add1</button>
+                        <button onclick="Add2(${user.quantity})">Add2</button>`;
+                    userDataDiv.appendChild(userDiv);
+                }
+            }
+        }
+
+        function Add1(quantity) {
+            const user = savedUserData[quantity];
+            const newquantity = Math.abs(100 - user.quantity);
+
+            if (newquantity !== null) {
+                user.quantity = newquantity;
+                localStorage.setItem('userData', JSON.stringify(savedUserData));
+                displayUserData();
+            }
+        }
+        function Add2(quantity) {
+            const user = savedUserData[quantity];
+            const newquantity = Math.abs(100 - user.quantity);
+
+            if (newquantity !== null) {
+                user.quantity = newquantity;
+                localStorage.setItem('userData', JSON.stringify(savedUserData));
+                displayUserData();
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

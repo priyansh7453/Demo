@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Local Storage Example</title>
+</head>
+
+<body>
+    <h1>Local Storage Example</h1>
+
+    <form id="userForm">
+        <label for="name">name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="email">email address</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="number">Phone number</label>
+        <input type="number" id="number" name="number" required><br><br>
+
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="userData">
+        <!-- User data will be displayed here -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
+    <script>
+        // Check if there's existing user data in local storage
+        let savedUserData = JSON.parse(localStorage.getItem('userData')) || [];
+
+        // Display existing user data on page load
+        displayUserData();
+
+        // Handle form submission
+        const userForm = document.getElementById('userForm');
+        userForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get user input
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const number = document.getElementById('number').value;
+
+            // Create a user object
+            const user = {
+                name: name,
+                email: email,
+                number: number,
+            };
+
+            // Add the user to the savedUserData array
+            savedUserData.push(user);
+
+            // Save the updated user data to local storage
+            //localStorage.setItem('userData', JSON.stringify(savedUserData));
+
+            // add cloud
+            axios.post("https://crudcrud.com/api/4bace2f489e94eeb9d019fcc94fd68d7/booking_appoit", user)
+                .then(response => {
+                    displayUserData(response.data);
+                    //console.log(response)
+                })
+                .catch(error => {
+                    document.body.innerHTML = document.body.innerHTML + "<h4> something went wrong </h4>"
+                    console.log(error)
+                })
+
+            // Display the updated user data
+            // displayUserData();
+
+            // Clear the form
+            userForm.reset();
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const data = axios.get("https://crudcrud.com/api/4bace2f489e94eeb9d019fcc94fd68d7/booking_appoit")
+                .then((response) => {
+                    console.log(response)
+
+                    for (var i = 0; i < response.data.length; i++) {
+                        displayUserData(response.data[i]);
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            console.log(data);
+        })
+
+        // Function to display user data
+        function displayUserData() {
+
+            user = {
+                _id: '',
+                name: '',
+                email: '',
+            }
+            const userDataDiv = document.getElementById('userData');
+            userDataDiv.innerHTML = '';
+
+            if (savedUserData.length === 0) {
+                userDataDiv.innerHTML = 'No user data available.';
+            } else {
+                userDataDiv.innerHTML = '<h2>User Data:</h2>';
+
+                for (let i = 0; i < savedUserData.length; i++) {
+                    const user = savedUserData[i];
+                    const userDiv = document.createElement('div');
+                    userDiv.innerHTML =
+                        `<p><strong></strong> ${user._id}<br> ${user.email} <br> ${user.number} </p>
+                        <button onclick="editUser(${user._id})">Edit</button>
+                        <button onclick="deleteUser(${user._id})">Delete</button>`;
+                    userDataDiv.appendChild(userDiv);
+                }
+            }
+        }
+
+        // Function to edit a user
+        function editUser(index) {
+            const user = savedUserData[index];
+            const newName = prompt('Enter new amount:', user.name);
+            const newEmail = prompt('Enter new descrip:', user.email);
+            const newChoose = prompt('Enter new choose:', user.number);
+
+            if (newName !== null && newEmail !== null) {
+                user.name = newName;
+                user.email = newEmail;
+                user.number = newNumber;
+                localStorage.setItem('userData', JSON.stringify(savedUserData));
+                displayUserData();
+            }
+        }
+
+        // Function to update a user
+        function updateUser(id) {
+            const userIndex = users.findIndex(user => user.id === id);
+            if (userIndex !== -1) {
+                users[userIndex].name = nameInput.value;
+                users[userIndex].email = emailInput.value;
+                users[userIndex].phone = phoneInput.value;
+                displayUsers();
+                editForm.style.display = "none";
+            }
+        }
+
+        // Function to delete a user
+        function deleteUser(userId) {
+            // window.addEventListener("DOMContentLoaded", () => {
+            //     const data = axios.delete("https://crudcrud.com/api/4bace2f489e94eeb9d019fcc94fd68d7/booking_appoit")
+            //        .then((response) => {
+            //             if (response.ok) {
+            //                const userdetail = documentg.getElementById(index);
+            //                 if (userdetail) {
+            //                    userdetail.remove();
+            //                }
+            //               else {
+            //                    console.error('Failed to delete user.');
+            //                }
+            //            }
+            //        })
+            //        .catch((error) => {
+            //            console.log(error);
+            //        })
+            //    console.log(data);
+            // })
+            axios.delete('https://crudcrud.com/api/4bace2f489e94eeb9d019fcc94fd68d7/booking_appoit/userId')
+                .then((response) => {
+                    removeUserFromScreen(userId);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+            savedUserData.splice(index, 1);
+            localStorage.setItem('userData', JSON.stringify(savedUserData));
+            displayUserData();
+        }
+
+        //function removeUserFromScreen(userId) {
+        //    const parentNode = document.getElementById('userData');
+        //    const childNodeToDelete = document.getElementById(userId);
+        //   if (childNodeToDelete) {
+        //      parentNode.removeChild(childNodeToDelete);
+        //      }
+        //  }
+    </script>
+</body>
+
+</html>
